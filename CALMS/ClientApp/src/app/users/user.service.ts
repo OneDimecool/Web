@@ -4,7 +4,6 @@ import { FormBuilder,FormGroup,Validators } from "@angular/forms";
 import { Router } from "@angular/router";
 import { ToastrService } from 'ngx-toastr';
 import { Subject } from 'rxjs';
-import { element } from "protractor";
 
 
 @Injectable({
@@ -110,7 +109,7 @@ export class UserService {
       });
      }
       else if (Array.isArray(role)) {
-      if (allowedRoles.filter(elemenmt => role.includes(element)).length > 0){
+      if (allowedRoles.filter(element => role.includes(element)).length > 0){
         match = true;
         }
     }

@@ -4,6 +4,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
 
+import { AdministrationComponent } from './administration/administration.component';
+import { AuthorizedGuard } from './authorize/authorize.guard';
 import { AuthorizeInterceptor } from './authorize/authorize.interceptor';
 import { AppComponent } from './app.component';
 import { NavMenuComponent } from './nav-menu/nav-menu.component';
@@ -24,7 +26,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     CounterComponent,
     FetchDataComponent,
     RegisterComponent,
-    LoginComponent
+    LoginComponent,
+    AdministrationComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
@@ -35,7 +38,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
       { path: 'counter', component: CounterComponent },
       { path: 'fetch-data', component: FetchDataComponent },
       { path: 'users/register', component: RegisterComponent },
-      { path: 'users/login' , component: LoginComponent }
+      { path: 'users/login', component: LoginComponent },
+      { path: 'administration', component: AdministrationComponent, canActivate: [AuthorizedGuard], data: {allowedRoles:['Administrator']}}
     ]),
     ReactiveFormsModule,
     BrowserAnimationsModule,
