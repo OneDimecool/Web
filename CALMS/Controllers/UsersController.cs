@@ -77,10 +77,7 @@ namespace CALMS.Controllers
                 }
                 var securityTokenDescriptor = new SecurityTokenDescriptor
                 {
-                    Subject = new ClaimsIdentity(new Claim[] {
-                          new Claim("Id", user.Id.ToString()),
-                          new Claim("Email", user.Email)
-                    }),
+                    Subject = new ClaimsIdentity(claims.ToArray()),
                     Expires = DateTime.UtcNow.AddHours(1),
                     SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Startup.Configuration["JWTkey"].ToString())),
                     SecurityAlgorithms.HmacSha256Signature)
