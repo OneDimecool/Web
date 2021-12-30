@@ -17,6 +17,20 @@ import { RegisterComponent } from './users/register.component';
 import { LoginComponent } from './users/login.component';
 import { ToastrModule } from 'ngx-toastr';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatTableModule } from '@angular/material/table';
+import { MatSortModule } from '@angular/material/sort';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatCardModule } from '@angular/material/card';
+import { MatButtonModule } from '@angular/material/button';
+import { MatDividerModule } from '@angular/material/divider';
+import { MatListModule } from '@angular/material/list';
+import 'hammerjs';
+import { UsersListComponent } from './users/list.component';
+import { UserIndexComponent } from './users/index.component';
+
 
 @NgModule({
   declarations: [
@@ -27,7 +41,9 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     FetchDataComponent,
     RegisterComponent,
     LoginComponent,
-    AdministrationComponent
+    AdministrationComponent,
+    UsersListComponent,
+    UserIndexComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
@@ -39,10 +55,21 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
       { path: 'fetch-data', component: FetchDataComponent },
       { path: 'users/register', component: RegisterComponent },
       { path: 'users/login', component: LoginComponent },
-      { path: 'administration', component: AdministrationComponent, canActivate: [AuthorizedGuard], data: {allowedRoles:['Administrator']}}
+      { path: 'administration', component: AdministrationComponent, canActivate: [AuthorizedGuard], data: { allowedRoles: ['Administrator'] } },
+      { path: 'users', component: UserIndexComponent, canActivate: [AuthorizedGuard], data: { allowedRoles: ['Administrator'] }}
     ]),
     ReactiveFormsModule,
     BrowserAnimationsModule,
+    MatTableModule,
+    MatPaginatorModule,
+    MatSortModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatTooltipModule,
+    MatCardModule,
+    MatButtonModule,
+    MatDividerModule,
+    MatListModule,
     ToastrModule.forRoot()
   ],
   providers: [UserService,

@@ -40,6 +40,7 @@
     <None Remove="ClientApp\src\app\authorize\authorize.guard.ts" />
     <None Remove="ClientApp\src\app\authorize\authorize.interceptor.ts" />
     <None Remove="ClientApp\src\app\users\index.component.ts" />
+    <None Remove="ClientApp\src\app\users\list.component.ts" />
     <None Remove="ClientApp\src\app\users\login.component.ts" />
     <None Remove="ClientApp\src\app\users\register.component.ts" />
     <None Remove="ClientApp\src\app\users\user.service.ts" />
