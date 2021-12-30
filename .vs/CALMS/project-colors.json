@@ -1,0 +1,16 @@
+{
+  "Version": 1,
+  "ProjectMap": {
+    "12ebdf7f-2219-4e74-b01e-0ce02f66c2b6": {
+      "ProjectGuid": "12ebdf7f-2219-4e74-b01e-0ce02f66c2b6",
+      "DisplayName": "CALMS",
+      "ColorIndex": 0
+    },
+    "a2fe74e1-b743-11d0-ae1a-00a0c90fffc3": {
+      "ProjectGuid": "a2fe74e1-b743-11d0-ae1a-00a0c90fffc3",
+      "DisplayName": "杂项文件",
+      "ColorIndex": -1
+    }
+  },
+  "NextColorIndex": 1
+}

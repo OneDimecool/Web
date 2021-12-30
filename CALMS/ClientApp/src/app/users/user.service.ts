@@ -4,6 +4,7 @@ import { FormBuilder,FormGroup,Validators } from "@angular/forms";
 import { Router } from "@angular/router";
 import { ToastrService } from 'ngx-toastr';
 import { Subject } from 'rxjs';
+import { publicDecrypt } from "crypto";
 
 
 @Injectable({
@@ -21,7 +22,7 @@ export class UserService {
 
   formRegisterModel = this.formBuilder.group
     ({
-      Email: ['yourname@Challengepk.com', Validators.email],
+      UserName: [''],
       Passwords: this.formBuilder.group(
         {
           Password: ['', [Validators.required, Validators.minLength(4)]],
@@ -34,7 +35,7 @@ export class UserService {
     });
   register() {
     const body = {
-      Email: this.formRegisterModel.value.Email,
+      UserName: this.formRegisterModel.value.UserName,
       Password: this.formRegisterModel.value.Passwords.Password
     };
     return this.httpClient.post(this.baseUrl + this.apiUrl + 'Register', body);
@@ -42,12 +43,12 @@ export class UserService {
   login(user) {
     this.authorizedUser$.next(
       {
-        Email:''
+        UserName:''
     });
     this.httpClient.post(this.baseUrl + this.apiUrl + 'Login', user).subscribe(
       (res: any) => {
           this.authorizedUser$.next({
-            Email: JSON.parse(window.atob((res.token.split('.')[1]))).Email
+            UserName: JSON.parse(window.atob((res.token.split('.')[1]))).Name
           });
         if (res) { 
           localStorage.setItem('token', res.token);
@@ -77,9 +78,9 @@ export class UserService {
     return this.httpClient.get(this.baseUrl + this.apiUrl + 'GetAuthorizedUserInfo');
   }
 
-  getAuthorizedUserEmail() {
+  getAuthorizedUserName() {
     if (localStorage.getItem('token')) {
-      return JSON.parse(window.atob(localStorage.getItem('token').split('.')[1])).Email;
+      return JSON.parse(window.atob(localStorage.getItem('token').split('.')[1])).UserName;
     }
     else {
       return ' ';
@@ -114,8 +115,20 @@ export class UserService {
         }
     }
     return match;
+  }
+  public GetUsers(Id?)
+  {
+    if (Id) {
+      return this.httpClient.get(this.baseUrl + this.apiUrl + Id);
+    }
+    else
+    {
+      return this.httpClient.get(this.baseUrl + this.apiUrl);
     }
   }
+}
+
+
 export interface AuthorizedUser {
-  Email: string;
+  UserName: string;
 }

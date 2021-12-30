@@ -39,10 +39,15 @@
     <None Remove="ClientApp\src\app\administration\administration.component.ts" />
     <None Remove="ClientApp\src\app\authorize\authorize.guard.ts" />
     <None Remove="ClientApp\src\app\authorize\authorize.interceptor.ts" />
+    <None Remove="ClientApp\src\app\users\index.component.ts" />
     <None Remove="ClientApp\src\app\users\login.component.ts" />
     <None Remove="ClientApp\src\app\users\register.component.ts" />
     <None Remove="ClientApp\src\app\users\user.service.ts" />
     <None Remove="ClientApp\tsconfig.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <TypeScriptCompile Remove="ClientApp\src\app\users\user.model.ts" />
   </ItemGroup>
 
   <ItemGroup>

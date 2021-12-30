@@ -137,13 +137,13 @@ namespace CALMS
                         roleResult = await roleManager.CreateAsync(new IdentityRole(roleName));
                     }
                 }
-                ApplicationUser userAdmin = await userManager.Users.FirstOrDefaultAsync(u => u.Email == "yjq_0805@163.com");
+                ApplicationUser userAdmin = await userManager.Users.FirstOrDefaultAsync(u => u.Email == "yjq@gmail.com");
                 if (userAdmin != null)
                 {
                     await userManager.AddToRoleAsync(userAdmin, "Administrator");
                     await userManager.AddToRoleAsync(userAdmin, "Moderator");
                 }
-                ApplicationUser userModerator = await userManager.Users.FirstOrDefaultAsync(u => u.Email == "123@gmail.com");
+                ApplicationUser userModerator = await userManager.Users.FirstOrDefaultAsync(u => u.Email == "yjq839803751@gmail.com");
                 if (userModerator != null)
                 {
                     await userManager.AddToRoleAsync(userModerator, "Moderator");
