@@ -5,10 +5,10 @@
     <h4> Create a new account</h4>
     <hr />
     <div class="form-group">
-      <label>Email</label>
-      <input formControlName="Email" class="form-control" />
-      <label class="text-danger" *ngIf="userService.formRegisterModel.get('Email').touched && userService.formRegisterModel.get('Email').errors?.email">
-        Invalid email address
+      <label>UserName</label>
+      <input formControlName="UserName" class="form-control" />
+      <label class="text-danger" *ngIf="userService.formRegisterModel.get('UserName').touched && userService.formRegisterModel.get('UserName').errors?.required">
+        The field is mandatory
       </label>
     </div>
     <div formGroupName="Passwords" class="form-group">

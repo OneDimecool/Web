@@ -11,6 +11,7 @@ using System.Security.Claims;
 using System.Text;
 using System.IdentityModel.Tokens.Jwt;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.EntityFrameworkCore;
 
 namespace CALMS.Controllers
 {
@@ -18,20 +19,28 @@ namespace CALMS.Controllers
     [ApiController]
     public class UsersController : ControllerBase
     {
+        public readonly ApplicationDbContext _applicationDbContext;
         public readonly UserManager<ApplicationUser> _userManager;
-        public UsersController(UserManager<ApplicationUser> userManager)
+        public UsersController(UserManager<ApplicationUser> userManager, ApplicationDbContext applicationDbContext)
         {
             _userManager = userManager;
+            _applicationDbContext = applicationDbContext;
         }
         public class ApplicationUserRegisterModel
         {
             [Required]
-            [EmailAddress]
-            public string Email { get; set; }
+            public string UserName { get; set; }
             [Required]
             [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long, MinimumLength = 4")]
             [DataType(DataType.Password)]
             public string Password { get; set; }
+        }
+
+        public class ApplicationUserViewModel
+        {
+            public string Id { get; set; }
+            public string UserName { get; set; }
+            public string[] Roles { get; set; }
         }
         //POST: api/Users/Register
         [HttpPost]
@@ -40,9 +49,7 @@ namespace CALMS.Controllers
         {
             var applicationUser = new ApplicationUser()
             {
-                UserName = model.Email,
-                Email = model.Email
-            };
+                UserName = model.UserName };
             try
             {
                 var result = await _userManager.CreateAsync(applicationUser, model.Password);
@@ -56,7 +63,7 @@ namespace CALMS.Controllers
 
         public class ApplicationUserLoginModel
         {
-            public string Email { get; set; }
+            public string UserName { get; set; }
             public string Password { get; set; }
         }
         // POST: api/Users/Login
@@ -64,23 +71,20 @@ namespace CALMS.Controllers
         [Route("Login")]
         public async Task<ActionResult> Login(ApplicationUserLoginModel model)
         {
-            var user = await _userManager.FindByEmailAsync(model.Email);
+            var user = await _userManager.FindByNameAsync(model.UserName);
             if (user != null && await _userManager.CheckPasswordAsync(user, model.Password))
             {
                 List<Claim> claims = new List<Claim>();
                 claims.Add(new Claim("Id", user.Id.ToString()));
-                claims.Add(new Claim("Email", user.Email));
+                claims.Add(new Claim("UserName", user.UserName));
                 var roles = await _userManager.GetRolesAsync(user);
                 IdentityOptions identityOptions = new IdentityOptions();
-                foreach(string role in roles){
+                foreach (string role in roles) {
                     claims.Add(new Claim(identityOptions.ClaimsIdentity.RoleClaimType, role));
                 }
                 var securityTokenDescriptor = new SecurityTokenDescriptor
                 {
-                    Subject = new ClaimsIdentity(new Claim[] {
-                          new Claim("Id", user.Id.ToString()),
-                          new Claim("Email", user.Email)
-                    }),
+                    Subject = new ClaimsIdentity(claims.ToArray()),
                     Expires = DateTime.UtcNow.AddHours(1),
                     SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Startup.Configuration["JWTkey"].ToString())),
                     SecurityAlgorithms.HmacSha256Signature)
@@ -106,8 +110,27 @@ namespace CALMS.Controllers
             var user = await _userManager.FindByIdAsync(userId);
             return new
             {
-                user.Email
+                user.UserName
             };
+        }
+        //GET: api/Users/GetUsers
+        [HttpGet]
+        [Authorize(Roles = "Administrator")]
+        public async Task<ActionResult<IEnumerable<ApplicationUserViewModel>>> GetUsers()
+        {
+            List<ApplicationUserViewModel> applicationUserViewModels = new List<ApplicationUserViewModel> ();
+            List<ApplicationUser> applicationUsers = await _applicationDbContext.Users.ToListAsync();
+            foreach (ApplicationUser applicationUser in applicationUsers) {
+                applicationUserViewModels.Add(new ApplicationUserViewModel()
+                { 
+                    UserName = applicationUser.UserName,
+                    Roles = _userManager.GetRolesAsync(applicationUser).Result.ToArray()
+                }
+                ) ;
+
+            }
+            return applicationUserViewModels;
+
         }
     }
 }

@@ -19,7 +19,7 @@ export class NavMenuComponent implements OnInit {
     });
     if (localStorage.getItem('token')) {
       this.authorizedUser = {
-        Email: this.userService.getAuthorizedUserEmail()
+        UserName: this.userService.getAuthorizedUserName()
       };
     }
   }
