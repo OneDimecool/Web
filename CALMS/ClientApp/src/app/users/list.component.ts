@@ -9,7 +9,7 @@ import { UserService } from "./user.service";
 })
 
 export class UsersListComponent implements OnInit, AfterViewInit {
-  columns: string[] = ['Email', 'Roles'];
+  columns: string[] = ['UserName', 'Roles','Details-Edit-Delete'];
   dataSource = new MatTableDataSource<User>();
 
   @ViewChild(MatSort, { static: true }) sort: MatSort;
@@ -18,7 +18,7 @@ export class UsersListComponent implements OnInit, AfterViewInit {
   constructor(private userService: UserService) {
     this.dataSource.filterPredicate = (user: User, filter: string) => {
       return user.UserName.toLowerCase().includes(filter.toLowerCase()) ||
-        user.Roles.join(' ').toLowerCase().includes(filter.toLowerCase());
+        user.Roles.join(', ').toLowerCase().includes(filter.toLowerCase());
     }
   }
   ngOnInit() {
@@ -37,6 +37,17 @@ export class UsersListComponent implements OnInit, AfterViewInit {
   }
 
   public filter(filter: string) {
-    this.dataSource.filter = filter.trim().toLowerCase();
+    //this.dataSource.filter = filter.trim().toLowerCase();
+  }
+
+  delete(Id) {
+    if (confirm('Are you sure to delete this user?')) {
+      this.userService.delete(Id).subscribe(() => {
+        this.get();
+      },
+        err => {
+          console.log((err));
+        })
+    }
   }
 }

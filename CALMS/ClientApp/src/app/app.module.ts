@@ -29,8 +29,9 @@ import { MatDividerModule } from '@angular/material/divider';
 import { MatListModule } from '@angular/material/list';
 import 'hammerjs';
 import { UsersListComponent } from './users/list.component';
-import { UserIndexComponent } from './users/index.component';
-
+import { UserIndexComponent } from './users/index.component'; 
+import { UserDetailsComponent } from './users/details.component';
+import { UserEditComponent } from './users/edit.component';
 
 @NgModule({
   declarations: [
@@ -43,7 +44,9 @@ import { UserIndexComponent } from './users/index.component';
     LoginComponent,
     AdministrationComponent,
     UsersListComponent,
-    UserIndexComponent
+    UserIndexComponent,
+    UserDetailsComponent,
+    UserEditComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
@@ -56,7 +59,9 @@ import { UserIndexComponent } from './users/index.component';
       { path: 'users/register', component: RegisterComponent },
       { path: 'users/login', component: LoginComponent },
       { path: 'administration', component: AdministrationComponent, canActivate: [AuthorizedGuard], data: { allowedRoles: ['Administrator'] } },
-      { path: 'users', component: UserIndexComponent, canActivate: [AuthorizedGuard], data: { allowedRoles: ['Administrator'] }}
+      { path: 'users', component: UserIndexComponent, canActivate: [AuthorizedGuard], data: { allowedRoles: ['Administrator'] } },
+      { path: 'users/:id', component: UserDetailsComponent, canActivate: [AuthorizedGuard], data: { allowedRoles: ['Administrator'] } },
+      { path: 'users/edit/:id', component: UserEditComponent, canActivate: [AuthorizedGuard], data: { allowedRoles: ['Administrator'] } }
     ]),
     ReactiveFormsModule,
     BrowserAnimationsModule,

@@ -3,3 +3,7 @@ export class User {
   UserName: string;
   Roles: string[];
 }
+export class Role {
+  Id: string;
+  Name: string;
+}

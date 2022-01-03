@@ -61,6 +61,7 @@ namespace CALMS
                         ValidateIssuerSigningKey = true,
                         IssuerSigningKey = new SymmetricSecurityKey(key),
                         ValidateIssuer = false,
+                        ValidateLifetime=true,
                         ValidateAudience = false,
                         ClockSkew = TimeSpan.Zero
                     };
@@ -137,7 +138,7 @@ namespace CALMS
                         roleResult = await roleManager.CreateAsync(new IdentityRole(roleName));
                     }
                 }
-                ApplicationUser userAdmin = await userManager.Users.FirstOrDefaultAsync(u => u.Email == "yjq@gmail.com");
+                ApplicationUser userAdmin = await userManager.Users.FirstOrDefaultAsync(u => u.Email == "yjq_0805@163.com");
                 if (userAdmin != null)
                 {
                     await userManager.AddToRoleAsync(userAdmin, "Administrator");

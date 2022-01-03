@@ -4,8 +4,6 @@ import { FormBuilder,FormGroup,Validators } from "@angular/forms";
 import { Router } from "@angular/router";
 import { ToastrService } from 'ngx-toastr';
 import { Subject } from 'rxjs';
-import { publicDecrypt } from "crypto";
-
 
 @Injectable({
   providedIn: 'root'
@@ -126,6 +124,17 @@ export class UserService {
       return this.httpClient.get(this.baseUrl + this.apiUrl);
     }
   }
+
+  delete(Id) {
+    return this.httpClient.delete(this.baseUrl + this.apiUrl + Id);
+  }
+
+  Put(user) {
+    return this.httpClient.put(this.baseUrl + this.apiUrl + user.Id, user);
+  }
+  public getRoles() {
+    return this.httpClient.get(this.baseUrl + this.apiUrl + 'GetRoles');
+   }
 }
 
 
