@@ -134,9 +134,8 @@ namespace CALMS.Controllers
             return applicationUserViewModels;
 
         }
-        //GET: api/Users
-        [HttpGet]
-        [Route("GetUser")]
+        //GET: api/Users/id
+        [HttpGet("{id}")]
         [Authorize(Roles = "Administrator")]
         public async Task<ActionResult<ApplicationUserViewModel>> GetUser(string id)
         {
@@ -153,8 +152,8 @@ namespace CALMS.Controllers
             };
             return applicationUserViewModel;
         }
-        //Delete: api/Users
-        [HttpDelete]
+        //Delete: api/Users 
+        [HttpDelete("{id}")]
         [Authorize(Roles = "Administrator")]
         public async Task<ActionResult<ApplicationUserViewModel>> DeleteUser(string id)
         {

@@ -27,6 +27,7 @@ import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatListModule } from '@angular/material/list';
+import { MatSidenavModule} from '@angular/material/sidenav'
 import 'hammerjs';
 import { UsersListComponent } from './users/list.component';
 import { UserIndexComponent } from './users/index.component'; 
@@ -75,6 +76,7 @@ import { UserEditComponent } from './users/edit.component';
     MatButtonModule,
     MatDividerModule,
     MatListModule,
+    MatSidenavModule,
     ToastrModule.forRoot()
   ],
   providers: [UserService,

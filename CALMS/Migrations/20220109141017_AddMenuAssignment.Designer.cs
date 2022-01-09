@@ -3,14 +3,16 @@ using System;
 using CALMS.Modules;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace CALMS.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220109141017_AddMenuAssignment")]
+    partial class AddMenuAssignment
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -42,10 +44,10 @@ namespace CALMS.Migrations
             modelBuilder.Entity("CALMS.Modules.ApplicationMenuAssignment", b =>
                 {
                     b.Property<string>("ApplicationMenuId")
-                        .HasColumnType("varchar(767)");
+                        .HasColumnType("varchar(256)");
 
                     b.Property<string>("IdentityRoleId")
-                        .HasColumnType("varchar(767)");
+                        .HasColumnType("varchar(256)");
 
                     b.HasKey("ApplicationMenuId", "IdentityRoleId");
 

@@ -67,6 +67,10 @@ export class UserService {
   }
 
   authorizedUser() {
+    if (localStorage.getItem('token') != null) {
+      const expiry = (JSON.parse(atob(localStorage.getItem('token').split('.')[1]))).exp;
+      return (Math.floor((new Date).getTime()/1000)) <= expiry
+    }
     return localStorage.getItem('token') != null;
   }
 
