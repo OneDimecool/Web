@@ -12,6 +12,7 @@ export class AuthorizedGuard implements CanActivate {
   canActivate(activatedRouteSnapshot: ActivatedRouteSnapshot): boolean {
     if (localStorage.getItem('token') != null) {
       const allowedRoles = activatedRouteSnapshot.data['allowedRoles'] as Array<string>;
+      const pageName = activatedRouteSnapshot.data['pageName'] as string
       if (allowedRoles) {
         if (this.userService.allowedRole(allowedRoles)) {
           return true;

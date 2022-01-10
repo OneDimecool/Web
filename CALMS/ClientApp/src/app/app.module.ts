@@ -59,10 +59,10 @@ import { UserEditComponent } from './users/edit.component';
       { path: 'fetch-data', component: FetchDataComponent },
       { path: 'users/register', component: RegisterComponent },
       { path: 'users/login', component: LoginComponent },
-      { path: 'administration', component: AdministrationComponent, canActivate: [AuthorizedGuard], data: { allowedRoles: ['Administrator'] } },
-      { path: 'users', component: UserIndexComponent, canActivate: [AuthorizedGuard], data: { allowedRoles: ['Administrator'] } },
-      { path: 'users/:id', component: UserDetailsComponent, canActivate: [AuthorizedGuard], data: { allowedRoles: ['Administrator'] } },
-      { path: 'users/edit/:id', component: UserEditComponent, canActivate: [AuthorizedGuard], data: { allowedRoles: ['Administrator'] } }
+      { path: 'administration', component: AdministrationComponent, canActivate: [AuthorizedGuard], data: { allowedRoles: ['Administrator'] , pageName : 'administration' } },
+      { path: 'users', component: UserIndexComponent, canActivate: [AuthorizedGuard], data: { allowedRoles: ['Administrator'] , pageName:'users'} },
+      { path: 'users/:id', component: UserDetailsComponent, canActivate: [AuthorizedGuard], data: { allowedRoles: ['Administrator'] , pageName: 'userDetail'} },
+      { path: 'users/edit/:id', component: UserEditComponent, canActivate: [AuthorizedGuard], data: { allowedRoles: ['Administrator'] , pageName:'userEdit'} }
     ]),
     ReactiveFormsModule,
     BrowserAnimationsModule,

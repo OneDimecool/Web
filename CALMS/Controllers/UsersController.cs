@@ -216,5 +216,25 @@ namespace CALMS.Controllers
         {
             return await _applicationDbContext.Roles.ToListAsync();
         }
+        //POST:api/Users/AddRoles
+        [HttpPost]
+        [Route("AddRoles")]
+        [Authorize(Roles ="Administrator")]
+        public async Task<Object> AddRoles()
+        {
+            var applicationUser = new ApplicationUser()
+            {
+                UserName = model.UserName
+            };
+            try
+            {
+                var result = await _userManager.CreateAsync(applicationUser, model.Password);
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
     }
 }
