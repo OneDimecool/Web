@@ -4,6 +4,7 @@ import { FormBuilder,FormGroup,Validators } from "@angular/forms";
 import { Router } from "@angular/router";
 import { ToastrService } from 'ngx-toastr';
 import { Subject } from 'rxjs';
+import { Role } from "./user.model";
 
 @Injectable({
   providedIn: 'root'
@@ -38,6 +39,15 @@ export class UserService {
     };
     return this.httpClient.post(this.baseUrl + this.apiUrl + 'Register', body);
   }
+
+  createRole(role) {
+    return this.httpClient.post(this.baseUrl + this.apiUrl + 'AddRole',role);
+  }
+
+  deleteRole(role) {
+    return this.httpClient.post(this.baseUrl + this.apiUrl + 'DeleteRole', role);
+  }
+
   login(user) {
     this.authorizedUser$.next(
       {

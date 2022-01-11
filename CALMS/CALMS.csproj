@@ -45,6 +45,8 @@
     <None Remove="ClientApp\src\app\authorize\authorize.guard.ts" />
     <None Remove="ClientApp\src\app\authorize\authorize.interceptor.ts" />
     <None Remove="ClientApp\src\app\Roles\menu.service.ts" />
+    <None Remove="ClientApp\src\app\Roles\role.module.ts" />
+    <None Remove="ClientApp\src\app\Roles\roleList.component.ts" />
     <None Remove="ClientApp\src\app\users\details.component.ts" />
     <None Remove="ClientApp\src\app\users\edit.component.ts" />
     <None Remove="ClientApp\src\app\users\index.component.ts" />

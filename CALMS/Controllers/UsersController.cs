@@ -21,10 +21,12 @@ namespace CALMS.Controllers
     {
         public readonly ApplicationDbContext _applicationDbContext;
         public readonly UserManager<ApplicationUser> _userManager;
-        public UsersController(UserManager<ApplicationUser> userManager, ApplicationDbContext applicationDbContext)
+        public readonly RoleManager<IdentityRole> _roleManager;
+        public UsersController(UserManager<ApplicationUser> userManager, ApplicationDbContext applicationDbContext,RoleManager<IdentityRole> roleManager)
         {
             _userManager = userManager;
             _applicationDbContext = applicationDbContext;
+            _roleManager = roleManager;
         }
         public class ApplicationUserRegisterModel
         {
@@ -119,16 +121,16 @@ namespace CALMS.Controllers
         [Authorize(Roles = "Administrator")]
         public async Task<ActionResult<IEnumerable<ApplicationUserViewModel>>> Users()
         {
-            List<ApplicationUserViewModel> applicationUserViewModels = new List<ApplicationUserViewModel> ();
+            List<ApplicationUserViewModel> applicationUserViewModels = new List<ApplicationUserViewModel>();
             List<ApplicationUser> applicationUsers = await _applicationDbContext.Users.ToListAsync();
             foreach (ApplicationUser applicationUser in applicationUsers) {
                 applicationUserViewModels.Add(new ApplicationUserViewModel()
-                { 
-                    Id=applicationUser.Id,
+                {
+                    Id = applicationUser.Id,
                     UserName = applicationUser.UserName,
                     Roles = _userManager.GetRolesAsync(applicationUser).Result.ToArray()
                 }
-                ) ;
+                );
 
             }
             return applicationUserViewModels;
@@ -140,7 +142,7 @@ namespace CALMS.Controllers
         public async Task<ActionResult<ApplicationUserViewModel>> GetUser(string id)
         {
             var applicationUser = await _applicationDbContext.Users.FindAsync(id);
-            if (applicationUser == null) 
+            if (applicationUser == null)
             {
                 return NotFound();
             }
@@ -178,7 +180,7 @@ namespace CALMS.Controllers
         [Authorize(Roles = "Administrator")]
         public async Task<ActionResult<ApplicationUserViewModel>> PutUser(string id, ApplicationUserViewModel model)
         {
-            if (id!=model.Id)
+            if (id != model.Id)
             {
                 return BadRequest();
             }
@@ -195,7 +197,7 @@ namespace CALMS.Controllers
                 await _userManager.AddToRolesAsync(applicationUser, model.Roles);
                 await _applicationDbContext.SaveChangesAsync();
             }
-            catch(DbUpdateConcurrencyException)
+            catch (DbUpdateConcurrencyException)
             {
                 if (applicationUser == null)
                 {
@@ -216,19 +218,25 @@ namespace CALMS.Controllers
         {
             return await _applicationDbContext.Roles.ToListAsync();
         }
+
+        public class IdentityRoleView
+         {
+            public string Name { get; set; }
+        }
         //POST:api/Users/AddRoles
         [HttpPost]
-        [Route("AddRoles")]
+        [Route("AddRole")]
         [Authorize(Roles ="Administrator")]
-        public async Task<Object> AddRoles()
+        public async Task<Object> AddRole(string role)
         {
-            var applicationUser = new ApplicationUser()
+            var _identityRole = new IdentityRole()
             {
-                UserName = model.UserName
+                Name = role,
+                NormalizedName = role.ToUpper()
             };
             try
             {
-                var result = await _userManager.CreateAsync(applicationUser, model.Password);
+                var result = await _roleManager.CreateAsync(_identityRole);
                 return Ok(result);
             }
             catch (Exception ex)
@@ -236,5 +244,29 @@ namespace CALMS.Controllers
                 throw ex;
             }
         }
+
+        //Delete: api/Users/DeleteRole/5
+        [HttpDelete]
+        [Route("DeleteRole")]
+        [Authorize(Roles = "Administrator")]
+        public async Task<ActionResult<IdentityRole>> DeleteRole(string role)
+        {
+            var identityRole = await _roleManager.FindByNameAsync(role);
+            if (identityRole == null)
+            {
+                return NotFound();
+            }
+            _applicationDbContext.Roles.Remove(identityRole);
+            await _applicationDbContext.SaveChangesAsync();
+
+            return new IdentityRole()
+            {
+                Id = identityRole.Id,
+                Name = identityRole.Name,
+            };
+        }
+
+
+
     }
 }
