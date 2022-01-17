@@ -15,6 +15,7 @@ import { FetchDataComponent } from './fetch-data/fetch-data.component';
 import { UserService } from './users/user.service';
 import { RegisterComponent } from './users/register.component';
 import { LoginComponent } from './users/login.component';
+import { RoleListComponent } from './Roles/roleList.component'
 import { ToastrModule } from 'ngx-toastr';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatPaginatorModule } from '@angular/material/paginator';
@@ -47,7 +48,8 @@ import { UserEditComponent } from './users/edit.component';
     UsersListComponent,
     UserIndexComponent,
     UserDetailsComponent,
-    UserEditComponent
+    UserEditComponent,
+    RoleListComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
@@ -62,7 +64,8 @@ import { UserEditComponent } from './users/edit.component';
       { path: 'administration', component: AdministrationComponent, canActivate: [AuthorizedGuard], data: { allowedRoles: ['Administrator'] , pageName : 'administration' } },
       { path: 'users', component: UserIndexComponent, canActivate: [AuthorizedGuard], data: { allowedRoles: ['Administrator'] , pageName:'users'} },
       { path: 'users/:id', component: UserDetailsComponent, canActivate: [AuthorizedGuard], data: { allowedRoles: ['Administrator'] , pageName: 'userDetail'} },
-      { path: 'users/edit/:id', component: UserEditComponent, canActivate: [AuthorizedGuard], data: { allowedRoles: ['Administrator'] , pageName:'userEdit'} }
+      { path: 'users/edit/:id', component: UserEditComponent, canActivate: [AuthorizedGuard], data: { allowedRoles: ['Administrator'], pageName: 'userEdit' } },
+      { path: 'roles', component: RoleListComponent, canActivate: [AuthorizedGuard], data: { allowedRoles: ['Administrator'], pageName: 'role' } }
     ]),
     ReactiveFormsModule,
     BrowserAnimationsModule,

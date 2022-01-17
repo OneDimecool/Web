@@ -25,6 +25,12 @@ namespace CALMS.Modules
     }
     public class ApplicationMenuView
     {
-        public string PageName;
+        public string PageName { get; set; }
+    }
+
+    public class ApplicationMenuAssignmentViewModel
+    {
+        public string IdentityRoleId { get; set; }
+        public string[] ApplicationMenuId { get; set; } 
     }
 }

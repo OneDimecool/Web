@@ -4,8 +4,8 @@ import { User } from "./user.model";
 import { UserService } from "./user.service";
 
 @Component({
-  selector: 'roleList',
-  templateUrl: 'roleList.component.html'
+  selector: 'users',
+  templateUrl: 'List.component.html'
 })
 
 export class UsersListComponent implements OnInit, AfterViewInit {

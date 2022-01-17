@@ -1,67 +1,63 @@
-import { Component, OnInit } from "@angular/core";
-import { FormBuilder, FormControl, FormGroup } from "@angular/forms";
-import { ActivatedRoute, Router } from "@angular/router";
+import { error } from "@angular/compiler/src/util";
+import { AfterViewInit, Component, OnInit, ViewChild } from "@angular/core";
+import { MatPaginator, MatSort, MatTableDataSource } from "@angular/material";
 import { Role } from "src/app/users/user.model";
 import { UserService } from "src/app/users/user.service";
 
 @Component({
-  templateUrl: 'edit.component.html'
+  selector: 'roleList',
+  templateUrl: 'roleList.component.html'
 })
 
-export class UserEditComponent implements OnInit {
-  public userForm: FormGroup;
-  public allRoles;
-  public selectedRoles = [];
+export class RoleListComponent implements OnInit, AfterViewInit {
+  columns: string[] = ['Name', 'Details-Edit-Delete'];
+  dataSource = new MatTableDataSource<Role>();
 
-  constructor(private router: Router,
-    private activatedRoute: ActivatedRoute,
-    private service: UserService,
-    private formBuilder: FormBuilder) { }
+  @ViewChild(MatSort, { static: true }) sort: MatSort;
+  @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
 
-  ngOnInit() {
-    this.service.getRoles().subscribe(res => {
-      console.log(res)
-      this.allRoles = res as Role;
-      this.allRoles.forEach(role => this.selectedRoles.push({ 'Name': role.Name, 'Selected': false }));
-    });
+  constructor(private userService: UserService) {
+    this.dataSource.filterPredicate = (role: Role, filter: string) => {
+      return role.Name.toLowerCase().includes(filter.toLowerCase());
 
-    this.userForm = this.formBuilder.group({
-      Id: new FormControl(),
-      UserName: [{ value: '', disabled: true }],
-      Roles: [],
-      RolesSelected: []
-    });
-
-    const id = this.activatedRoute.snapshot.paramMap.get('id');
-    this.service.GetUsers(id).subscribe(res => {
-      this.userForm.patchValue(res as User);
-      this.selectedRoles.forEach((role, index, array) => {
-        if (this.userForm.controls['Roles'].value.includes(role.Name)) {
-          array[index].Selected = true;
-        }
-      });
-    },
-      (error => { console.log(error); }))
-  }
-
-  public error(control: string, error: string) {
-    return this.userForm.controls[control].hasError(error);
-  }
-  public cancel() {
-    this.router.navigateByUrl('/users');
-  }
-
-  public save(userFormValue) {
-    if (this.userForm.valid) {
-      const user: User = {
-        Id: userFormValue.Id,
-        UserName: userFormValue.UserName,
-        Roles: userFormValue.RolesSelected
-      };
-      this.service.Put(user).subscribe(() => {
-        this.router.navigateByUrl('/users');
-      },
-        (error => { console.log(error) }));
     }
+  }
+  ngOnInit() {
+    this.get();
+  }
+
+  ngAfterViewInit() {
+    this.dataSource.sort = this.sort;
+    this.dataSource.paginator = this.paginator;
+  }
+
+  public get() {
+    this.userService.getRoles().subscribe(res => {
+      this.dataSource.data = res as Role[];
+    });
+  }
+
+  public filter(filter: string) {
+    this.dataSource.filter = filter.trim().toLowerCase();
+  }
+
+  delete(role) {
+    if (confirm('Are you sure to delete this role?')) {
+      this.userService.deleteRole(role).subscribe(() => {
+        this.get();
+      },
+        err => {
+          console.log((err));
+        })
+    }
+  }
+
+  create(role) {
+    this.userService.createRole(role).subscribe(() => {
+      this.get();
+    },
+      err => {
+        console.log((err));
+      })
   }
 }

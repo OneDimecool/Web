@@ -14,7 +14,7 @@ export class MenuService {
     this.baseUrl = baseUrl;
   }
 
-  public GetUsers()
+  public GetMenus()
   {
     return this.httpClient.get(this.baseUrl + this.apiUrl);
   }

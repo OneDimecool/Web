@@ -45,7 +45,7 @@ export class UserService {
   }
 
   deleteRole(role) {
-    return this.httpClient.post(this.baseUrl + this.apiUrl + 'DeleteRole', role);
+    return this.httpClient.delete(this.baseUrl + this.apiUrl + 'DeleteRole', role);
   }
 
   login(user) {
