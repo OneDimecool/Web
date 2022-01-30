@@ -3,7 +3,7 @@ import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
-
+import { MenuService } from './Roles/menu.service'
 import { AdministrationComponent } from './administration/administration.component';
 import { AuthorizedGuard } from './authorize/authorize.guard';
 import { AuthorizeInterceptor } from './authorize/authorize.interceptor';
@@ -34,6 +34,7 @@ import { UsersListComponent } from './users/list.component';
 import { UserIndexComponent } from './users/index.component'; 
 import { UserDetailsComponent } from './users/details.component';
 import { UserEditComponent } from './users/edit.component';
+import { AddRoleComponent } from './Roles/addrole.component'
 
 @NgModule({
   declarations: [
@@ -49,7 +50,8 @@ import { UserEditComponent } from './users/edit.component';
     UserIndexComponent,
     UserDetailsComponent,
     UserEditComponent,
-    RoleListComponent
+    RoleListComponent,
+    AddRoleComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
@@ -65,7 +67,8 @@ import { UserEditComponent } from './users/edit.component';
       { path: 'users', component: UserIndexComponent, canActivate: [AuthorizedGuard], data: { allowedRoles: ['Administrator'] , pageName:'users'} },
       { path: 'users/:id', component: UserDetailsComponent, canActivate: [AuthorizedGuard], data: { allowedRoles: ['Administrator'] , pageName: 'userDetail'} },
       { path: 'users/edit/:id', component: UserEditComponent, canActivate: [AuthorizedGuard], data: { allowedRoles: ['Administrator'], pageName: 'userEdit' } },
-      { path: 'roles', component: RoleListComponent, canActivate: [AuthorizedGuard], data: { allowedRoles: ['Administrator'], pageName: 'role' } }
+      { path: 'roles', component: RoleListComponent, canActivate: [AuthorizedGuard], data: { allowedRoles: ['Administrator'], pageName: 'role' } },
+      { path: 'roles/add', component: AddRoleComponent, canActivate: [AuthorizedGuard], data: { allowedRoles: ['Administrator'], pageName: 'role' } }
     ]),
     ReactiveFormsModule,
     BrowserAnimationsModule,
@@ -82,7 +85,7 @@ import { UserEditComponent } from './users/edit.component';
     MatSidenavModule,
     ToastrModule.forRoot()
   ],
-  providers: [UserService,
+  providers: [UserService, MenuService,
     { provide:HTTP_INTERCEPTORS,useClass: AuthorizeInterceptor,multi:true}
   ],
   bootstrap: [AppComponent]

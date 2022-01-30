@@ -1,4 +1,4 @@
-<a class="btn" [routerLink]="['/users/register']" matTooltip="Register">
+<a class="btn" [routerLink]="['/roles/add']" matTooltip="AddRole">
   <i class="material-icons">add</i>
 </a>
 <mat-form-field>
@@ -25,7 +25,7 @@
         <a class="btn" [routerLink]="['/users/edit', item.Id]" matTooltip="Edit">
           <i class="material-icons">edit</i>
         </a>
-        <a class="btn" matTooltip="Delete" (click)="delete(item.Name)">
+        <a class="btn" matTooltip="Delete" (click)="delete(item.Id)">
           <i class="material-icons">delete</i>
         </a>
       </td>

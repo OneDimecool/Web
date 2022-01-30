@@ -33,4 +33,11 @@ namespace CALMS.Modules
         public string IdentityRoleId { get; set; }
         public string[] ApplicationMenuId { get; set; } 
     }
+    public class IdentityRoleModel
+    {
+        public string Id { get; set; }
+        public string RoleName { get; set; }
+        public string[] MenuNames { get; set; }
+        public string[] MenuId { get; set; }
+    }
 }

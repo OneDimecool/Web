@@ -41,9 +41,9 @@ export class RoleListComponent implements OnInit, AfterViewInit {
     this.dataSource.filter = filter.trim().toLowerCase();
   }
 
-  delete(role) {
+  delete(roleId) {
     if (confirm('Are you sure to delete this role?')) {
-      this.userService.deleteRole(role).subscribe(() => {
+      this.userService.deleteRole(roleId).subscribe(() => {
         this.get();
       },
         err => {

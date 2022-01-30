@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
@@ -44,10 +44,12 @@
     <None Remove="ClientApp\src\app\administration\administration.component.ts" />
     <None Remove="ClientApp\src\app\authorize\authorize.guard.ts" />
     <None Remove="ClientApp\src\app\authorize\authorize.interceptor.ts" />
+    <None Remove="ClientApp\src\app\Roles\Addrole.component.ts" />
+    <None Remove="ClientApp\src\app\Roles\menu.model.ts" />
     <None Remove="ClientApp\src\app\Roles\menu.service.ts" />
-    <None Remove="ClientApp\src\app\Roles\role.module.ts" />
     <None Remove="ClientApp\src\app\Roles\roleEdit.component.ts" />
     <None Remove="ClientApp\src\app\Roles\roleList.component.ts" />
+    <None Remove="ClientApp\src\app\Roles\Roles.Model.ts" />
     <None Remove="ClientApp\src\app\users\details.component.ts" />
     <None Remove="ClientApp\src\app\users\edit.component.ts" />
     <None Remove="ClientApp\src\app\users\index.component.ts" />

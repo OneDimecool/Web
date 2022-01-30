@@ -41,11 +41,14 @@ export class UserService {
   }
 
   createRole(role) {
-    return this.httpClient.post(this.baseUrl + this.apiUrl + 'AddRole',role);
+    const body = {
+    Name: role
+    }
+    return this.httpClient.post(this.baseUrl + this.apiUrl + 'AddRole',body);
   }
 
-  deleteRole(role) {
-    return this.httpClient.delete(this.baseUrl + this.apiUrl + 'DeleteRole', role);
+  deleteRole(roleId) {
+    return this.httpClient.delete(this.baseUrl + this.apiUrl + 'DeleteRole?roleId=' + roleId);
   }
 
   login(user) {

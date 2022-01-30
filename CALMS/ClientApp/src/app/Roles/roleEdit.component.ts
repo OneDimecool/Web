@@ -1,42 +1,44 @@
 import { Component, OnInit } from "@angular/core";
 import { FormBuilder, FormControl, FormGroup } from "@angular/forms";
 import { ActivatedRoute, Router } from "@angular/router";
-import { Role, User } from "src/app/users/user.model";
+import { MenuModel, RoleModel,RoleMenuModel } from "./menu.model";
 import { UserService } from "src/app/users/user.service";
+import { MenuService } from "./menu.service";
 
 @Component({
   templateUrl: 'edit.component.html'
 })
 
 export class RoleEditComponent implements OnInit {
-  public userForm: FormGroup;
-  public allRoles;
-  public selectedRoles = [];
+  public roleForm: FormGroup;
+  public allMenus;
+  public selectedMenus = [];
 
   constructor(private router: Router,
     private activatedRoute: ActivatedRoute,
-    private service: UserService,
+    private UserService: UserService,
+    private MenuService: MenuService,
     private formBuilder: FormBuilder) { }
-
+  //初始化-获取菜单列表把菜单名字加入selectedMenus数组，被选择状态全部设为false
   ngOnInit() {
-    this.service.getRoles().subscribe(res => {
+    this.MenuService.GetMenus().subscribe(res => {
       console.log(res)
-      this.allRoles = res as Role;
-      this.allRoles.forEach(role => this.selectedRoles.push({ 'Name': role.Name, 'Selected': false }));
+      this.allMenus = res as MenuModel;
+      this.allMenus.forEach(menu => this.selectedMenus.push({ 'Name': menu.MenuName, 'Selected': false }));
     });
-
-    this.userForm = this.formBuilder.group({
+    //定义表单模板
+    this.roleForm = this.formBuilder.group({
       Id: new FormControl(),
-      UserName: [{ value: '', disabled: true }],
-      Roles: [],
-      RolesSelected: []
+      RoleName: [{ value: '', disabled: true }],
+      MenuName: [],
+      MenuSelected: []
     });
-
+    //用id查允许访问的菜单列表，更新表单数值，根据id的菜单列表，标记selected
     const id = this.activatedRoute.snapshot.paramMap.get('id');
-    this.service.GetUsers(id).subscribe(res => {
-      this.userForm.patchValue(res as User);
-      this.selectedRoles.forEach((role, index, array) => {
-        if (this.userForm.controls['Roles'].value.includes(role.Name)) {
+    this.MenuService.GetMenusById(id).subscribe(res => {
+      this.roleForm.patchValue(res as RoleModel);
+      this.selectedMenus.forEach((menu, index, array) => {
+        if (this.roleForm.controls['Menus'].value.includes(menu.Name)) {
           array[index].Selected = true;
         }
       });
@@ -45,18 +47,18 @@ export class RoleEditComponent implements OnInit {
   }
 
   public error(control: string, error: string) {
-    return this.userForm.controls[control].hasError(error);
+    return this.roleForm.controls[control].hasError(error);
   }
   public cancel() {
     this.router.navigateByUrl('/users');
   }
 
-  public save(userFormValue) {
-    if (this.userForm.valid) {
-      const user: User = {
-        Id: userFormValue.Id,
-        UserName: userFormValue.UserName,
-        Roles: userFormValue.RolesSelected
+    public save(roleFormValue) {
+    if (this.roleForm.valid) {
+      const roleMenu: RoleMenuModel = {
+        IdentityRoleId: roleFormValue.Id,
+        ApplicationMenuId : roleFormValue.RoleName,
+        Menu: userFormValue.RolesSelected
       };
       this.service.Put(user).subscribe(() => {
         this.router.navigateByUrl('/users');

@@ -1,0 +1,16 @@
+<h1>Create A New Role</h1>
+<div class="row">
+  <div class="col-md-4">
+    <form [formGroup]="menuService.formRoleModel" autocomplete="off" (submit)="AddRole()">
+      <hr />
+      <div class="form-group">
+        <label>RoleName</label>
+        <input formControlName="RoleName" class="form-control" />
+        <label class="text-danger" *ngIf="menuService.formRoleModel.get('RoleName').touched && menuService.formRoleModel.get('RoleName').errors?.required">
+          The field is mandatory
+        </label>
+      </div>
+        <button type="submit" class="btn btn-primary" [disabled]="!menuService.formRoleModel.valid">Create</button>
+    </form>
+  </div>
+</div>

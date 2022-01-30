@@ -60,5 +60,57 @@ namespace CALMS.Controllers
             }
             return NoContent();
         }
+
+        [HttpGet("{id}")]
+        [Route("GetMenusById")]
+        [Authorize(Roles = "Administrator")]
+        public async Task<ActionResult<IdentityRoleModel>> GetMenusById(string id)
+        {
+            var applicationRole= await applicationDbContext.Roles.FindAsync(id);
+            if (applicationRole == null)
+            {
+                return NotFound();
+            }
+            IdentityRoleModel roleModel = new IdentityRoleModel() 
+            { 
+                Id=applicationRole.Id,
+                RoleName=applicationRole.Name,
+                MenuNames= GetMenuName(id),
+                MenuId= GetMenuId(id)
+            };
+
+            return roleModel;
+        }
+
+        public string[] GetMenuName(string id)
+        {
+            var Menus = applicationDbContext.MenuRoles.ToList();
+            var _Menus = Menus.FindAll(e => e.IdentityRoleId == id);
+            string[] MenuArray = new string[_Menus.Count];
+            int i = 0;
+            foreach (var a in _Menus)
+            {
+                MenuArray[i] = GetMenuNameById(a.ApplicationMenuId);
+            }
+            return MenuArray;
+        }
+
+        public string GetMenuNameById(string id)
+        {
+            var MenuName = applicationDbContext.Menus.Find(id);
+            return MenuName.PageName;
+        }
+        public string[] GetMenuId(string id)
+        {
+            var Menus = applicationDbContext.MenuRoles.ToList();
+            var _Menus = Menus.FindAll(e => e.IdentityRoleId == id);
+            string[] MenuList = new string[_Menus.Count];
+            int i = 0;
+            foreach (var a in _Menus)
+            {
+                MenuList[i] = a.ApplicationMenuId;
+            }
+            return MenuList;
+        }
     }
 }

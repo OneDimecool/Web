@@ -154,6 +154,8 @@ namespace CALMS.Controllers
             };
             return applicationUserViewModel;
         }
+
+
         //Delete: api/Users 
         [HttpDelete("{id}")]
         [Authorize(Roles = "Administrator")]
@@ -227,12 +229,12 @@ namespace CALMS.Controllers
         [HttpPost]
         [Route("AddRole")]
         [Authorize(Roles ="Administrator")]
-        public async Task<Object> AddRole(string role)
+        public async Task<Object> AddRole(IdentityRoleView role)
         {
             var _identityRole = new IdentityRole()
             {
-                Name = role,
-                NormalizedName = role.ToUpper()
+                Name = role.Name,
+                NormalizedName = role.Name.ToUpper()
             };
             try
             {
@@ -245,13 +247,12 @@ namespace CALMS.Controllers
             }
         }
 
-        //Delete: api/Users/DeleteRole/5
-        [HttpDelete]
+        //Delete: api/Users/DeleteRole
         [Route("DeleteRole")]
         [Authorize(Roles = "Administrator")]
-        public async Task<ActionResult<IdentityRole>> DeleteRole(string role)
+        public async Task<ActionResult<IdentityRole>> DeleteRole(string roleId)
         {
-            var identityRole = await _roleManager.FindByNameAsync(role);
+            var identityRole = await _roleManager.FindByIdAsync(roleId);
             if (identityRole == null)
             {
                 return NotFound();

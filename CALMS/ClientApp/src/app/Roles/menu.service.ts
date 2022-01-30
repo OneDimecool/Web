@@ -14,8 +14,21 @@ export class MenuService {
     this.baseUrl = baseUrl;
   }
 
+  formRoleModel = this.formBuilder.group({
+    RoleName: ['', [Validators.required]]
+  })
+
   public GetMenus()
   {
     return this.httpClient.get(this.baseUrl + this.apiUrl);
+  }
+
+  public PutMenus(RoleMenu) {
+    return this.httpClient.put(this.baseUrl + this.apiUrl, RoleMenu);
+  }
+
+  public GetMenusById(id)
+  {
+    return this.httpClient.get(this.baseUrl + this.apiUrl +'GetMenusById'+id)
   }
 }
